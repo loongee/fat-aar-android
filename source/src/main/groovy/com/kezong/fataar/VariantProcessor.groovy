@@ -1,27 +1,22 @@
 package com.kezong.fataar
 
 import com.android.build.gradle.api.LibraryVariant
-import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.ResolvedArtifact
 import org.gradle.api.artifacts.ResolvedDependency
 import org.gradle.api.internal.artifacts.ResolvableDependency
-import org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskDependency
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Zip
 
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.stream.Collectors
-
 /**
  * Core
  * Processor for variant
@@ -255,14 +250,11 @@ class VariantProcessor {
         }
     }
 
-    // gradle < 6, return TaskDependency
-    // gradle >= 6, return TaskDependencyContainer
-    static def getTaskDependency(ResolvedArtifact artifact) {
+    static def getTaskDependencies(ResolvedArtifact artifact) {
         try {
-            return artifact.buildDependencies
+            return artifact.id.publishArtifact.buildDependencies.getDependencies()
         } catch(MissingPropertyException ignore) {
-            // since gradle 6.8.0, property is changed;
-            return artifact.builtBy
+            return Collections.emptySet()
         }
     }
 
@@ -279,19 +271,8 @@ class VariantProcessor {
             } else if (FatAarPlugin.ARTIFACT_TYPE_AAR == artifact.type) {
                 AndroidArchiveLibrary archiveLibrary = new AndroidArchiveLibrary(mProject, artifact, mVariant.name)
                 addAndroidArchiveLibrary(archiveLibrary)
-                Set<Task> dependencies
+                Set<Task> dependencies = getTaskDependencies(artifact)
 
-                if (getTaskDependency(artifact) instanceof TaskDependency) {
-                    dependencies = artifact.buildDependencies.getDependencies()
-                } else {
-                    CachingTaskDependencyResolveContext context = new CachingTaskDependencyResolveContext()
-                    getTaskDependency(artifact).visitDependencies(context)
-                    if (context.queue.size() == 0) {
-                        dependencies = new HashSet<>()
-                    } else {
-                        dependencies = context.queue.getFirst().getDependencies()
-                    }
-                }
                 final def zipFolder = archiveLibrary.getRootFolder()
                 zipFolder.mkdirs()
                 def group = artifact.getModuleVersion().id.group.capitalize()
