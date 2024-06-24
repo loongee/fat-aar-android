@@ -5,13 +5,12 @@
 
 This fork adds support for AGP 8.0+
 
-The solution of merging aar works with [AGP][3] 8.0 and higher. (Tested with AGP 8.3, and Gradle 8.6)
+The solution of merging aar works with [AGP][3] 8.5 and Gradle 8.7
 
 ## Getting Started
 
 ### Step 1: Add classpath
 #### Add snippet below to your root build script file:
-For Maven Central (The lastest release is available on [Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kezong/fat-aar)):
 ```groovy
 buildscript {
     repositories {
@@ -23,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.aasitnikov:fat-aar-android:1.4.0'
+        classpath 'com.github.aasitnikov:fat-aar-android:1.4.1'
     }
 }
 ```
@@ -119,6 +118,7 @@ See [anatomy of an aar file here][2].
 ## Gradle Version Support
 |     Version     | Android Gradle Plugin |  Gradle   |
 |:---------------:|:---------------------:|:---------:|
+|      1.4.1      |          8.5          |    8.7    |
 |      1.4.0      |          8.3          |    8.6    |
 |      1.3.8      |        3.0.0+         |   4.9+    |
 |      1.3.6      |     3.0.0 - 4.2.0     |   4.9+    |
@@ -137,11 +137,13 @@ See [anatomy of an aar file here][2].
 
 The following link which version of Gradle is required for each version of the Android Gradle plugin. For the best performance, you should use the latest possible version of both Gradle and the plugin.
 
-[Plugin version and Required Gradle version](https://developer.android.google.cn/studio/releases/gradle-plugin.html)
+[Plugin version and Required Gradle version](https://developer.android.com/build/releases/gradle-plugin)
 
 ## Version Log
-- [1.4.0](<https://github.com/kezong/fat-aar-android/releases/tag/v1.4.0>)
-  - Add support for AGP 8.3
+- [1.4.1](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.1>)
+  - Support AGP 8.5
+- [1.4.0](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.0>)
+  - Support AGP 8.3
 - [1.3.8](<https://github.com/kezong/fat-aar-android/releases/tag/v1.3.8>)
   - Fix the issue that plugin cannot be used in jdk 1.8 [#371](https://github.com/kezong/fat-aar-android/issues/371)
 - [1.3.7](<https://github.com/kezong/fat-aar-android/releases/tag/v1.3.7>)
