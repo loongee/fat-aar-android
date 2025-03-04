@@ -18,6 +18,7 @@ import org.gradle.internal.Describables
 import org.gradle.internal.component.local.model.PublishArtifactLocalArtifactMetadata
 import org.gradle.internal.component.model.DefaultIvyArtifactName
 import org.gradle.internal.model.CalculatedValueContainerFactory
+
 /**
  * FlavorArtifact
  */
@@ -32,7 +33,7 @@ class FlavorArtifact {
                                                  TaskDependencyFactory taskDependencyFactory
     ) {
         Project artifactProject = getArtifactProject(project, unResolvedArtifact)
-        TaskProvider bundleProvider = null;
+        TaskProvider bundleProvider
         try {
             bundleProvider = getBundleTask(artifactProject, variant)
         } catch (Exception ex) {

@@ -14,6 +14,7 @@ import org.gradle.api.provider.MapProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.commons.Remapper;
@@ -42,7 +43,7 @@ public class FatAarPluginHelper {
                     params -> {
                         params.getNamespace().set(variant.getNamespace());
                         params.getLibraryNamespaces().set(variantPackagesProperty.getting(variant.getName())
-                                .map(list -> list.stream().map(it -> it.getPackageName()).collect(Collectors.toList()))
+                                .map(list -> list.stream().map(AndroidArchiveLibrary::getPackageName).collect(Collectors.toList()))
                         );
                         return Unit.INSTANCE;
                     });
@@ -63,7 +64,8 @@ public class FatAarPluginHelper {
         }
 
         @Override
-        public ClassVisitor createClassVisitor(ClassContext classContext, ClassVisitor classVisitor) {
+        @NotNull
+        public ClassVisitor createClassVisitor(@NotNull ClassContext classContext, @NotNull ClassVisitor classVisitor) {
             Params params = getParameters().get();
             String namespace = params.getNamespace().get();
             List<String> libraryNamespaces = params.getLibraryNamespaces().orElse(Collections.emptyList()).get();
@@ -80,7 +82,7 @@ public class FatAarPluginHelper {
                     .collect(Collectors.toSet());
             List<String> libraryRSubclasses = libraryNamespaces.stream()
                     .map(it -> it.replace(".", "/") + "/R$")
-                    .collect(Collectors.toList());
+                    .toList();
 
             Remapper remapper = new Remapper() {
                 @Override
@@ -103,7 +105,7 @@ public class FatAarPluginHelper {
         }
 
         @Override
-        public boolean isInstrumentable(ClassData classData) {
+        public boolean isInstrumentable(@NotNull ClassData classData) {
             return true;
         }
     }

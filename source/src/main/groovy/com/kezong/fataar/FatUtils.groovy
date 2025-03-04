@@ -4,6 +4,7 @@ import org.gradle.api.Project
 
 class FatUtils {
 
+    // FIXME: be careful, this is a static field! Logs can be mixed up if multiple tasks are running concurrently
     private static Project sProject
 
     def static attach(Project p) {
@@ -27,13 +28,15 @@ class FatUtils {
     }
 
     def static showDir(int indent, File file) throws IOException {
-        for (int i = 0; i < indent; i++)
+        for (int i = 0; i < indent; i++) {
             System.out.print('-')
+        }
         println(file.getName() + " " + file.size())
         if (file.isDirectory()) {
             File[] files = file.listFiles()
-            for (int i = 0; i < files.length; i++)
+            for (int i = 0; i < files.length; i++) {
                 showDir(indent + 4, files[i])
+            }
         }
     }
 
