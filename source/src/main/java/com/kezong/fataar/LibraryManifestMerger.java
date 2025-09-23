@@ -27,6 +27,7 @@ public class LibraryManifestMerger extends DefaultTask {
     private String mGradlePluginVersion;
 
     private String mGradleVersion;
+    private ManifestMerger2.Invoker.Feature[] mMergerFeatures;
 
     private File mMainManifestFile;
 
@@ -40,6 +41,10 @@ public class LibraryManifestMerger extends DefaultTask {
 
     public void setGradleVersion(String gradleVersion) {
         mGradleVersion = gradleVersion;
+    }
+
+    public void withMergerFeatures(ManifestMerger2.Invoker.Feature... features) {
+        mMergerFeatures = features;
     }
 
     protected void doTaskAction() {
@@ -78,6 +83,9 @@ public class LibraryManifestMerger extends DefaultTask {
             }
         }
         mergerInvoker.addManifestProviders(manifestProviders);
+        if (mMergerFeatures != null) {
+            mergerInvoker.withFeatures(mMergerFeatures);
+        }
         MergingReport mergingReport = mergerInvoker.merge();
         if (mergingReport.getResult().isError()) {
             getLogger().error(mergingReport.getReportString());
