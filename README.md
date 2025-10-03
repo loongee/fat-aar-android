@@ -3,9 +3,9 @@
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aasitnikov/fat-aar-android/blob/master/LICENSE)
 [![JitPack](https://jitpack.io/v/aasitnikov/fat-aar-android.svg)](https://jitpack.io/#aasitnikov/fat-aar-android)
 
-This fork adds support for AGP 8.0+
+The solution of merging aar works with [AGP][3] 8.0+ (tested up to 8.13)
 
-The solution of merging aar works with [AGP][3] 8.5 and Gradle 8.7
+Plugin is in maintenance mode, please consider official [Fused Library Plugin](https://developer.android.com/build/publish-library/fused-library)
 
 ## Getting Started
 
@@ -22,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.aasitnikov:fat-aar-android:1.4.2'
+        classpath 'com.github.aasitnikov:fat-aar-android:1.4.3'
     }
 }
 ```
@@ -118,6 +118,7 @@ See [anatomy of an aar file here][2].
 ## Gradle Version Support
 |     Version     | Android Gradle Plugin |  Gradle   |
 |:---------------:|:---------------------:|:---------:|
+|      1.4.3      |         8.13          |   8.14    |
 |      1.4.2      |          8.7          |   8.12    |
 |      1.4.1      |          8.5          |    8.7    |
 |      1.4.0      |          8.3          |    8.6    |
@@ -141,10 +142,12 @@ The following link which version of Gradle is required for each version of the A
 [Plugin version and Required Gradle version](https://developer.android.com/build/releases/gradle-plugin)
 
 ## Version Log
+- [1.4.3](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.3>)
+  - Add support for AGP 8.13 [#2](https://github.com/aasitnikov/fat-aar-android/pull/2). Thanks, [@NormanWangEndeavor](https://github.com/NormanWangEndeavor)!
 - [1.4.2](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.2>)
   - Drop AGP < 8.0.0 support
   - Fix parallel multi-project tasks execution
-  - Support META-INF/*.kotlin_module merging [#1](https://github.com/aasitnikov/fat-aar-android/pull/1). Thanks, @rugged-bl!
+  - Support META-INF/*.kotlin_module merging [#1](https://github.com/aasitnikov/fat-aar-android/pull/1). Thanks, [@rugged-bl](https://github.com/rugged-bl)!
 - [1.4.1](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.1>)
   - Support AGP 8.5
 - [1.4.0](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.0>)
