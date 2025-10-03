@@ -2,6 +2,7 @@ package com.kezong.fataar
 
 import com.android.build.gradle.api.LibraryVariant
 import com.android.build.gradle.tasks.ManifestProcessorTask
+import com.android.manifmerger.ManifestMerger2
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.artifacts.ResolvedArtifact
@@ -257,6 +258,9 @@ final class VariantProcessor {
 
         TaskProvider<LibraryManifestMerger> manifestsMergeTask = mProject
                 .tasks.register("merge${mVariant.name.capitalize()}Manifest", LibraryManifestMerger) {
+            if (FatUtils.compareVersion(VersionAdapter.AGPVersion, "8.13.0") >= 0) {
+                withMergerFeatures(ManifestMerger2.Invoker.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING)
+            }
             setGradleVersion(mProject.getGradle().getGradleVersion())
             setGradlePluginVersion(VersionAdapter.AGPVersion)
             setMainManifestFile(manifestOutput)
