@@ -22,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.github.aasitnikov:fat-aar-android:1.4.3'
+        classpath("com.github.aasitnikov:fat-aar-android:1.4.4")
     }
 }
 ```
@@ -118,7 +118,7 @@ See [anatomy of an aar file here][2].
 ## Gradle Version Support
 |     Version     | Android Gradle Plugin |  Gradle   |
 |:---------------:|:---------------------:|:---------:|
-|      1.4.3      |         8.13          |   8.14    |
+|      1.4.4      |         8.13          |   8.14    |
 |      1.4.2      |          8.7          |   8.12    |
 |      1.4.1      |          8.5          |    8.7    |
 |      1.4.0      |          8.3          |    8.6    |
@@ -142,6 +142,8 @@ The following link which version of Gradle is required for each version of the A
 [Plugin version and Required Gradle version](https://developer.android.com/build/releases/gradle-plugin)
 
 ## Version Log
+- [1.4.4](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.4>)
+  - Fix build error when assembling app module with version 1.4.3 [#3](https://github.com/aasitnikov/fat-aar-android/pull/3). Thanks, [@NormanWangEndeavor](https://github.com/NormanWangEndeavor)!
 - [1.4.3](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.3>)
   - Add support for AGP 8.13 [#2](https://github.com/aasitnikov/fat-aar-android/pull/2). Thanks, [@NormanWangEndeavor](https://github.com/NormanWangEndeavor)!
 - [1.4.2](<https://github.com/aasitnikov/fat-aar-android/releases/tag/1.4.2>)
