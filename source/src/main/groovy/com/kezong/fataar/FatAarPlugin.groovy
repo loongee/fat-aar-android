@@ -31,6 +31,8 @@ class FatAarPlugin implements Plugin<Project> {
 
     private final Collection<Configuration> embedConfigurations = new ArrayList<>()
 
+    private final Map<String, EmbedDependencyConfig> dependencyConfigMap = new HashMap<>()
+
     private MapProperty<String, List<AndroidArchiveLibrary>> variantPackagesProperty;
 
     private CalculatedValueContainerFactory calculatedValueContainerFactory
@@ -53,10 +55,12 @@ class FatAarPlugin implements Plugin<Project> {
         this.project = project
         checkAndroidPlugin()
         FatUtils.attach(project)
-        project.extensions.create(FatAarExtension.NAME, FatAarExtension)
+        FatAarExtension extension = project.extensions.create(FatAarExtension.NAME, FatAarExtension)
         createConfigurations()
         registerTransform()
         project.afterEvaluate {
+            // Merge configs from extension after evaluation
+            dependencyConfigMap.putAll(extension.dependencyConfigMap)
             doAfterEvaluate()
         }
     }
@@ -89,7 +93,7 @@ class FatAarPlugin implements Plugin<Project> {
             }
 
             if (!artifacts.isEmpty()) {
-                def processor = new VariantProcessor(project, variant, variantPackagesProperty)
+                def processor = new VariantProcessor(project, variant, variantPackagesProperty, dependencyConfigMap)
                 processor.processVariant(artifacts, firstLevelDependencies)
             }
         }

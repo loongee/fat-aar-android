@@ -23,6 +23,8 @@ public class AndroidArchiveLibrary {
 
     private String mPackageName;
 
+    private boolean mKeepRawClasses = false;
+
     public AndroidArchiveLibrary(Project project, ResolvedArtifact artifact, String variantName) {
         if (!"aar".equals(artifact.getType())) {
             throw new IllegalArgumentException("artifact must be aar type!");
@@ -30,6 +32,14 @@ public class AndroidArchiveLibrary {
         mProject = project;
         mArtifact = artifact;
         mVariantName = variantName;
+    }
+
+    public boolean isKeepRawClasses() {
+        return mKeepRawClasses;
+    }
+
+    public void setKeepRawClasses(boolean keepRawClasses) {
+        mKeepRawClasses = keepRawClasses;
     }
 
     public String getGroup() {

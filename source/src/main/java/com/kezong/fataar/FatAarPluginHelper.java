@@ -43,7 +43,10 @@ public class FatAarPluginHelper {
                     params -> {
                         params.getNamespace().set(variant.getNamespace());
                         params.getLibraryNamespaces().set(variantPackagesProperty.getting(variant.getName())
-                                .map(list -> list.stream().map(AndroidArchiveLibrary::getPackageName).collect(Collectors.toList()))
+                                .map(list -> list.stream()
+                                        .filter(lib -> !lib.isKeepRawClasses())  // Filter out libraries with keepRawClasses=true
+                                        .map(AndroidArchiveLibrary::getPackageName)
+                                        .collect(Collectors.toList()))
                         );
                         return Unit.INSTANCE;
                     });

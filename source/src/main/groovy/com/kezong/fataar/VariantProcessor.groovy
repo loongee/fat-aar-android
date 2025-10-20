@@ -41,13 +41,17 @@ final class VariantProcessor {
 
     private final DirectoryManager mDirectoryManager
 
+    private final Map<String, EmbedDependencyConfig> mDependencyConfigMap
+
     VariantProcessor(Project project,
                      LibraryVariant variant,
-                     MapProperty<String, List<AndroidArchiveLibrary>> variantPackagesProperty) {
+                     MapProperty<String, List<AndroidArchiveLibrary>> variantPackagesProperty,
+                     Map<String, EmbedDependencyConfig> dependencyConfigMap) {
         mProject = project
         mVariant = variant
         mVersionAdapter = new VersionAdapter(project, variant)
         mDirectoryManager = new DirectoryManager(project, variant)
+        mDependencyConfigMap = dependencyConfigMap
         mAndroidArchiveLibrariesProperty = mProject.objects.listProperty(AndroidArchiveLibrary.class)
         variantPackagesProperty.put(mVariant.getName(), mAndroidArchiveLibrariesProperty)
     }
@@ -208,6 +212,15 @@ final class VariantProcessor {
                 addJarFile(artifact.file)
             } else if (FatAarPlugin.ARTIFACT_TYPE_AAR == artifact.type) {
                 AndroidArchiveLibrary archiveLibrary = new AndroidArchiveLibrary(mProject, artifact, mVariant.name)
+                
+                // Apply keepRawClasses configuration if exists
+                String dependencyKey = "${artifact.moduleVersion.id.group}:${artifact.moduleVersion.id.name}:${artifact.moduleVersion.id.version}"
+                EmbedDependencyConfig config = mDependencyConfigMap.get(dependencyKey)
+                if (config != null && config.keepRawClasses) {
+                    archiveLibrary.setKeepRawClasses(true)
+                    FatUtils.logAnytime("keepRawClasses enabled for: ${dependencyKey}")
+                }
+                
                 addAndroidArchiveLibrary(archiveLibrary)
                 Set<Task> dependencies = getTaskDependencies(artifact)
 
